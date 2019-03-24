@@ -4,51 +4,18 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    
-    public float jumpVelocity = 3f;
-    public float fallMultiplier = 2.5f;
-    public float lowJumpMultiplier = 2f;
-    public float rotSpeed = 5f;
-    public float rot = 0f;
-    protected Rigidbody2D rb2d;
+    [Header("Properties")]
+    [SerializeField]
+    private float JumpForce = 1000;
 
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("Reference")]
+    [SerializeField]
+    private PogoSpring _pogoSpring;
 
     void Update()
     {
-       
-    }
-   
-
-    void FixedUpdate()
-    {
-       rot -= Input.GetAxis ("Horizontal") * rotSpeed;
-        transform.eulerAngles = new Vector3(0.0f, 0.0f, rot);
- 
-       if (Input.GetButtonDown ("Jump"))
-            Jump();
- 
-    }
-
-    void Jump()
-    {
-        GetComponent<Rigidbody2D>().velocity = Vector2.up * jumpVelocity;
-        if(rb2d.velocity.y < 0){
-            rb2d.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            _pogoSpring.QueueJump(JumpForce);
         }
-        else if (rb2d.velocity.y > 0 && !Input.GetButton ("Jump"))
-            rb2d.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
     }
-
-    //public void AddTorque(float torque, ForceMode2D mode = ForceMode2D.Force);
-
-    
-
-   
 }
-    
